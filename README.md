@@ -158,3 +158,5 @@ countStore.subscribe(onChange);
 add.addEventListener("click", () => countStore.dispatch({ type: ADD }));
 minus.addEventListener("click", () => countStore.dispatch({ type: MINUS }));
 ```
+
+MUTATE STATE는 쓰면 안됨
