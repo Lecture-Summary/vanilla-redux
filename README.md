@@ -73,7 +73,9 @@ countStore.dispatch({ type: "HELLO" });
 
 reducer에 action을 보내는 방법이다.
 
-dispatch에는 객체만이 들어갈 수 있다.
+dispatch에는 객체만이 들어갈 수 있고 반드시 type도 있어야한다.
+
+type의 이름을 바꿀 수는 없다.
 
 dispatch를 사용하면 redux가 countModifier를 호출할 것이고 console.log(action)이 호출되는 것이다.
 
@@ -117,3 +119,42 @@ countStore.subscribe(onChange);
 ```
 
 위의 결과로 state가 변경되면 console.log 결과로 값이 변경되는 것을 볼 수 있다.
+
+### 개선사항
+
+if를 쓰는것보다 switch를 사용한다.
+
+redux 공식문서에서도 switch를 사용하고 훨씬 낫다.
+
+두번째 개선사항으로는 type: string을 사용하지않고 상수를 사용해주는 것이다.
+
+그러면 "ADDD" 같은 오타가 발생했을때 string으로는 js 가 에러를 알려주지 않지만
+
+type: ADD 로 할 경우 오타로 type: ADDD 로 했을경우 js 는 ADDD가 선언되지 않았다고 에러를 알려줄 것이다.
+
+```js
+const ADD = "ADD";
+const MINUS = "MINUS";
+
+const countModifier = (count = 0, action) => {
+  switch (action.type) {
+    case ADD:
+      return count + 1;
+    case MINUS:
+      return count - 1;
+    default:
+      return count;
+  }
+};
+
+const countStore = createStore(countModifier);
+
+const onChange = () => {
+  number.innerText = countStore.getState();
+};
+
+countStore.subscribe(onChange);
+
+add.addEventListener("click", () => countStore.dispatch({ type: ADD }));
+minus.addEventListener("click", () => countStore.dispatch({ type: MINUS }));
+```
