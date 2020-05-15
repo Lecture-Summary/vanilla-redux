@@ -160,3 +160,9 @@ minus.addEventListener("click", () => countStore.dispatch({ type: MINUS }));
 ```
 
 MUTATE STATE는 쓰면 안됨
+
+store.getCurrent() + 1 같은 방법은 안되고 store를 수정하는 방법은 action을 보내는 것
+
+`return state.push(action.text)` 와 같은 방법은 안된다.
+
+새로운 배열을 만들어 return 한다.
