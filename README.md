@@ -55,3 +55,51 @@ console.log(countStore.getState()); // console : hello
 createStore 함수로 만들어지는 store의 변수명과 reducer의 이름은 다른 것이어도 상관없다.
 
 위 처럼 return하는 값이 application의 data가 된다.
+
+이제 값을 수정할 때 사용하는것이 action이다.
+
+action은 redux에서 function을 부를 때 쓰는 두번째 paremeter, 혹은 argument이다.
+
+```js
+const countModifier = (count = 0, action) => {
+  console.log(action); // {type: "@@redux/INITp.b.n.o.c.r"} {type: "HELLO"}
+  return count;
+};
+
+const countStore = createStore(countModifier);
+
+countStore.dispatch({ type: "HELLO" });
+```
+
+reducer에 action을 보내는 방법이다.
+
+dispatch에는 객체만이 들어갈 수 있다.
+
+dispatch를 사용하면 redux가 countModifier를 호출할 것이고 console.log(action)이 호출되는 것이다.
+
+```js
+const countModifier = (count = 0, action) => {
+  if (action.type === "ADD") {
+    return count + 1;
+  } else if (action.type === "MINUS") {
+    return count - 1;
+  } else {
+    return count;
+  }
+};
+
+const countStore = createStore(countModifier);
+
+countStore.dispatch({ type: "ADD" });
+countStore.dispatch({ type: "ADD" });
+countStore.dispatch({ type: "ADD" });
+countStore.dispatch({ type: "ADD" });
+countStore.dispatch({ type: "ADD" });
+countStore.dispatch({ type: "MINUS" });
+
+console.log(countStore.getState()); // 4
+```
+
+dispatch로 type: "ADD" 를 5번 보냄으로써 count + 5가 되고
+
+마지막에 type: "MINUS"를 1번 보냄으로써 count - 1이 되고 최종적으로 4가 찍히는 모습이다.
