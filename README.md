@@ -103,3 +103,17 @@ console.log(countStore.getState()); // 4
 dispatch로 type: "ADD" 를 5번 보냄으로써 count + 5가 되고
 
 마지막에 type: "MINUS"를 1번 보냄으로써 count - 1이 되고 최종적으로 4가 찍히는 모습이다.
+
+## subscribe
+
+subscribe는 state안에 있는 변화들을 알 수 있게 해준다.
+
+```js
+const onChange = () => {
+  console.log(countStore.getState());
+};
+
+countStore.subscribe(onChange);
+```
+
+위의 결과로 state가 변경되면 console.log 결과로 값이 변경되는 것을 볼 수 있다.
