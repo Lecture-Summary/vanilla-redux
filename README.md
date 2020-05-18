@@ -1,5 +1,7 @@
 # React-Redux
 
+(react-redux 문서)[https://react-redux.js.org/introduction/quick-start]
+
 ```sh
 yarn add react-redux
 ```
@@ -116,6 +118,8 @@ connect를 사용하려면 먼저 react-redux에서 connect를 import 해준다.
 
 ## mapStateToProps
 
+반드시 객체를 반환해야함
+
 ```js
 function getCurrentState(state, ownProps) {
   return { potato: true };
@@ -172,6 +176,8 @@ function Home({ toDos }) {
 
 ## mapDispatchToProps
 
+반드시 객체를 반환해야함
+
 ```js
 function mapDispatchToProps(dispatch) {
   return { addToDo: (text) => dispatch(actionCreators.addToDo(text)) };
@@ -183,3 +189,31 @@ export default connect(mapStateToProps, mapDispatchToProps)(Home);
 dispatch를 react에서 하려면 connect를 import한 후 mapDispatchToProps함수를 만들어 connect의 두번째 매개변수로 준다.
 
 그리고 return 값으로 object를 반드시 줘야하며, dispatch를 return하면 dispatch 함수가 Home component의 props로 생성된다
+
+```js
+function mapDispatchToProps(dispatch, ownProps) {
+  return {
+    onBtnClick: () => dispatch(actionCreators.deleteToDo(ownProps.id)),
+  };
+}
+```
+
+mapDispatchToProps의 두번째 매개변수에는 ownProps라는 것이 있는데 ownProps에는 component의 props가 담겨있다.
+
+## find 함수, ?
+
+```js
+function mapStateToProps(state, ownProps) {
+  const {
+    match: {
+      params: { id },
+    },
+  } = ownProps;
+  return { toDo: state.find((toDo) => toDo.id === parseInt(id)) };
+}
+```
+
+```js
+<h1>{toDo?.text}</h1>
+<h5>Created at: {toDo?.id}</h5>
+```
