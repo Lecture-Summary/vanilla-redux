@@ -114,6 +114,8 @@ connect를 사용하려면 먼저 react-redux에서 connect를 import 해준다.
 
 그 후 `export default connect(function)(component);` 해준다.
 
+## mapStateToProps
+
 ```js
 function getCurrentState(state, ownProps) {
   return { potato: true };
@@ -153,3 +155,31 @@ function mapStateToProps(state) {
 
 export default connect(mapStateToProps)(Home);
 ```
+
+이제 받은 props를 화면에 표시하려면
+
+```js
+function Home({ toDos }) {
+  return (
+    <>
+      <ul>{JSON.stringify(toDos)}</ul>
+    </>
+  );
+}
+```
+
+위와 같이 props의 toDos 를 표시한다
+
+## mapDispatchToProps
+
+```js
+function mapDispatchToProps(dispatch) {
+  return { addToDo: (text) => dispatch(actionCreators.addToDo(text)) };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
+```
+
+dispatch를 react에서 하려면 connect를 import한 후 mapDispatchToProps함수를 만들어 connect의 두번째 매개변수로 준다.
+
+그리고 return 값으로 object를 반드시 줘야하며, dispatch를 return하면 dispatch 함수가 Home component의 props로 생성된다
