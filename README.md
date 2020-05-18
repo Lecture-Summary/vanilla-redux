@@ -70,3 +70,86 @@ index.js로 간 후 react-redux의 Provider를 import해준다.
 그 후 `<App/>` Component를 `<Provider>`로 감싸준다.
 
 Provider에는 store={} 값으로 export한 store를 넣어준다.
+
+## connect
+
+component들을 store에 연결해준다.
+
+```js
+import React, { useState } from "react";
+import { connect } from "react-redux";
+
+function Home(props) {
+  console.log(props);
+  const [text, setText] = useState("");
+
+  function onChange(e) {
+    setText(e.target.value);
+  }
+
+  function onSubmit(e) {
+    e.preventDefault();
+    setText("");
+  }
+
+  return (
+    <>
+      <h1>To Do</h1>
+      <form onSubmit={onSubmit}>
+        <input type="text" value={text} onChange={onChange} />
+        <button>Add</button>
+      </form>
+    </>
+  );
+}
+
+function getCurrentState(state, ownProps) {
+  return { sexy: true };
+}
+
+export default connect(getCurrentState)(Home);
+```
+
+connect를 사용하려면 먼저 react-redux에서 connect를 import 해준다.
+
+그 후 `export default connect(function)(component);` 해준다.
+
+```js
+function getCurrentState(state, ownProps) {
+  return { potato: true };
+}
+```
+
+function 부분은 `return { potato: true}` 를 하게된다면, Home component의 props로 potato: true가 있을 것이다.
+
+만약 `console.log(state)`를 한다면 현재 state의 값이 출력된다.
+
+```js
+function getCurrentState(state, ownProps) {
+  return { state };
+}
+```
+
+우리는 state를 return 받기를 원한다. 그러므로 위와 같이 작성한다.
+
+```js
+function getCurrentState(state) {
+  return { toDos: state };
+}
+```
+
+이렇게도 사용 가능
+
+그리고 문서에서 function의 이름은 mapStateToProps여야 한다.
+
+기본적으로 Redux state로부터 home(component)에 Props를 전달한다는 뜻이다.
+
+그러므로 아래와 같이 변경해준다.
+
+```js
+function mapStateToProps(state) {
+  return { toDos: state };
+}
+
+export default connect(mapStateToProps)(Home);
+```
