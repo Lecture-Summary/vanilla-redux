@@ -79,3 +79,55 @@ const reducer = (state = [], action) => {
 6번째 줄의 action.text를 action.payload로 바꿔줘야한다.
 
 payload의 값을 보고 싶으면 `console.log(action)`을 입력하면 된다.
+
+[image1]
+
+## createReducer
+
+```js
+import { createAction, createReducer } from "@reduxjs/toolkit";
+```
+
+```js
+const reducer = (state = [], action) => {
+  switch (action.type) {
+    case addToDo.type:
+      return [{ text: action.payload, id: Date.now() }, ...state];
+    case deleteToDo.type:
+      return state.filter((toDo) => toDo.id !== action.payload);
+    default:
+      return state;
+  }
+```
+
+```js
+const reducer = createReducer([], {
+  [addToDo]: (state, action) => {
+    state.push({ text: action.payload, id: Date.now() });
+  },
+  [deleteToDo]: (state, action) =>
+    state.filter((toDo) => toDo.id !== action.payload),
+});
+```
+
+createReducer를 import한다.
+
+createReducer를 사용하면 state를 mutate하기 쉽게 만들어준다.
+
+createReducer의 첫번째 인자에는 initial state를 넣고, 두번째 인자는 action이라고 생각하면 된다.
+
+state를 return 할 필요도 없다.
+
+createReducer를 사용할땐 두가지 옵션이 있다. 원래 하던대로 새로운 state를 return 할 수 있고, 수정한 작업처럼 state를 mutate할 수 있다.
+
+mutate를 하는 이유는 immer 아래에서 작동이 되기 때문에 redux toolkit이 정보를 가져가 암튼 된다
+
+mutate를 하는데 뒤에선 return 새로운 state기능이 수행됨.
+
+무언가를 return할때는 새로운 state여야 한다.
+
+state를 mutate하고 싶다면 return 하지 않는다.
+
+위는 push는 mutate를 해서 return을 하지 않는 모습이고, filter는 mutate를 하지 않고 새로운 array를 생성해 return 하는 모습
+
+[image2]
