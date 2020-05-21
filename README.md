@@ -167,3 +167,29 @@ Redux devtools를 사용하기 위해 redux toolkit이 반드시 필요한건 �
 [이미지2]
 
 [이미지3]
+
+## createSlice
+
+```js
+import { configureStore, createSlice } from "@reduxjs/toolkit";
+
+const toDos = createSlice({
+  name: "toDosReducer",
+  initialState: [],
+  reducers: {
+    add: (state, action) => {
+      state.push({ text: action.payload, id: Date.now() });
+    },
+    remove: (state, action) =>
+      state.filter((toDo) => toDo.id !== action.payload),
+  },
+});
+
+const store = configureStore({ reducer: toDos.reducer });
+
+export const { add, remove } = toDos.actions;
+
+export default store;
+```
+
+코드를 더 줄일 수 있다.
